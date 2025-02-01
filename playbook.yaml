@@ -1,61 +1,44 @@
 ---
-- hosts: all
-  become: true
-  vars:
-    created_username: ansible
+- name: Create user
+  hosts: vps
+  remote_user: root
+  gather_facts: no
+  vars_files:
+    - .env.yml
+  roles:
+    - role: user
+      tags:
+        - user
 
-  tasks:
-    - name: Install aptitude
-      apt:
-        name: aptitude
-        state: latest
-        update_cache: true
+- name: Server setup
+  hosts: vps
+  remote_user: "{{ username }}"
+  vars_files:
+    - .env.yml
+  roles:
+    - role: harden
+      become: true
+      tags:
+        - harden
+        - sec
 
-    - name: Setup passwordless sudo
-      lineinfile:
-        path: /etc/sudoers
-        state: present
-        regexp: '^%sudo'
-        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
-        validate: '/usr/sbin/visudo -cf %s'
+    - role: housekeeping
+      become: true
+      tags:
+        - housekeeping
 
-    - name: Create a new regular user with sudo privileges
-      user:
-        name: "{{ created_username }}"
-        state: present
-        groups: sudo 
-        append: true
-        create_home: true
+    - role: fail2ban
+      become: true
+      tags:
+        - fail2ban
+        - sec
 
-    - name: Set authorized key for remote user
-      ansible.posix.authorized_key:
-        user: "{{ created_username }}"
-        state: present
-        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"
+    - role: nginx
+      become: true
+      tags:
+        - nginx
 
-    - name: Disable password authentication for root
-      lineinfile:
-        path: /etc/ssh/sshd_config
-        state: present
-        regexp: '^#?PermitRootLogin'
-        line: 'PermitRootLogin prohibit-password'
-
-    - name: Update apt and install required system packages
-      apt:
-        pkg:
-          - curl
-          - vim
-          - git
-          - ufw
-        state: latest
-        update_cache: true
-
-    - name: UFW - Allow SSH connections
-      community.general.ufw:
-        rule: allow
-        name: OpenSSH
-
-    - name: UFW - Enable and deny by default
-      community.general.ufw:
-        state: enabled
-        default: deny
+    - role: dmitriaronson.com
+      become: true
+      tags:
+        - website
