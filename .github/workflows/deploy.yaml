@@ -26,10 +26,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H your-vps-host.com >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ vars.VPS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Run Ansible playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: false
         run: |
-          ansible-playbook playbook.yaml -u {{ vars.VPS_USERNAME }} --tags website
+          ansible-playbook playbook.yaml -u ${{ vars.VPS_USERNAME }} --tags website

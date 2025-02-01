@@ -21,7 +21,7 @@
     content: |
       <body>
         <h1>
-          Hi 222!
+          Hi!
         </h1>
       </body>
     mode: 0644
