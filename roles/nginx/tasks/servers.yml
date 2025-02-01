@@ -1,0 +1,24 @@
+- name: Clear existing servers
+  block:
+    - name: Rm sites-enabled
+      file:
+        state: absent
+        path: "/etc/nginx/sites-enabled"
+
+    - name: Mkdir sites-enabled
+      file:
+        state: directory
+        path: "/etc/nginx/sites-enabled"
+        mode: 0755
+
+- name: Config website server
+  template:
+    src: "nginx-website"
+    dest: "/etc/nginx/sites-enabled/website"
+    mode: 0644
+
+- name: Enable and restart nginx
+  service:
+    name: nginx
+    enabled: true
+    state: restarted

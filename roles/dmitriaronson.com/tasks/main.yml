@@ -1,0 +1,27 @@
+- name: Create and chown website dir
+  file:
+    path: "/var/www/website"
+    state: directory
+    mode: 0755
+
+- name: Sample index
+  copy:
+    dest: "/var/www/website/index.html"
+    content: |
+      <body>
+        <h1>
+          Hi!
+        </h1>
+      </body>
+    mode: 0644
+
+- name: Sample about
+  copy:
+    dest: "/var/www/website/about.html"
+    content: |
+      <body>
+        <h1>
+          Hi 222!
+        </h1>
+      </body>
+    mode: 0644
