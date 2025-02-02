@@ -24,12 +24,19 @@ jobs:
       - name: Add SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ vars.VPS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Run Ansible playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: false
+          ANSIBLE_USERNAME: ${{ secrets.ANSIBLE_USERNAME }}
+          ANSIBLE_DOMAIN: ${{ secrets.ANSIBLE_DOMAIN }}
+          WEBSITE_DOMAIN: dmitriaronson.com
+          EMAIL: ${{ secrets.EMAIL }}
+          SSH_KEY: "~/.ssh/id_ed25519"
+          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
         run: |
+          cp .env-sample.yaml .env
           ansible-playbook playbook.yaml -u ${{ vars.VPS_USERNAME }} --tags website
