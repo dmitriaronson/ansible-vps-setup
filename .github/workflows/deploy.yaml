@@ -35,7 +35,7 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: false
           ANSIBLE_USERNAME: ${{ secrets.ANSIBLE_USERNAME }}
           ANSIBLE_HOST: ${{ secrets.ANSIBLE_HOST }}
-          EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
         run: |
           ansible-playbook playbook.yaml -u ${{ secrets.ANSIBLE_USERNAME }}
