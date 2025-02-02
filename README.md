@@ -26,7 +26,7 @@ export ANSIBLE_HOST=vpshost.com
 export ADMIN_EMAIL=user@email.com
 export CLOUDFLARE_TOKEN=cftoken
 
-ansible-playbook playbook.yml
+ansible-playbook playbook.yaml
 ```
 
 ## Tags
