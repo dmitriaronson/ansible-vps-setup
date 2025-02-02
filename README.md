@@ -5,6 +5,7 @@ A simple Ansible playbook for configuring and hardening a VPS.
 ## Structure
 
 The playbook runs in two phases:
+
 1. Initial setup with root user to create a secure user account
 2. Main configuration using the created user with sudo privileges
 
