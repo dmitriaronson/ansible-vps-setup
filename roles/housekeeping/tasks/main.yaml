@@ -1,0 +1,5 @@
+- name: Update system
+  import_tasks: update.yaml
+
+- name: Clean up system
+  import_tasks: cleanup.yaml

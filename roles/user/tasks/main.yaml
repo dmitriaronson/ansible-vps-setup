@@ -20,7 +20,7 @@
       when: has_root_access and create_remote_user
       block:
         - name: Create user
-          import_tasks: create.yml
+          import_tasks: create.yaml
 
         - name: Sudo and SSH
-          import_tasks: priviledges.yml
+          import_tasks: priviledges.yaml

@@ -2,9 +2,9 @@
 - name: Create user
   hosts: vps
   remote_user: root
-  gather_facts: no
+  gather_facts: false
   vars_files:
-    - .env.yml
+    - .env.yaml
   roles:
     - role: user
       tags:
@@ -14,7 +14,7 @@
   hosts: vps
   remote_user: "{{ username }}"
   vars_files:
-    - .env.yml
+    - .env.yaml
   roles:
     - role: harden
       become: true

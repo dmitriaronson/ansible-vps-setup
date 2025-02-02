@@ -1,11 +1,11 @@
 - name: Install nginx and certbot
-  import_tasks: install.yml
+  import_tasks: install.yaml
 
 - name: Configure servers
-  import_tasks: servers.yml
+  import_tasks: servers.yaml
 
 - name: Configure nginx
-  import_tasks: config.yml
+  import_tasks: config.yaml
 
 - name: Create certs and keep them updated
-  import_tasks: certs.yml
+  import_tasks: certs.yaml
