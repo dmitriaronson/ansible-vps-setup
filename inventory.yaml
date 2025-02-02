@@ -1,12 +1,16 @@
 all:
   hosts:
     vps:
-      ansible_host: "{{ ip | default(domain) }}"
-      ansible_ssh_private_key_file: "{{ ssh_key | default('~/.ssh/id_rsa') }}"
+      ansible_host: "{{ ip | default(host) }}"
+      ansible_ssh_private_key_file: "{{ ssh_key | default('~/.ssh/id_ed25519') }}"
 
   vars:
-    username: "{{ username }}"
+    username: "{{ lookup('env', 'ANSIBLE_USERNAME') | default('ansible', true) }}"
     create_remote_user: true
+    host: "{{ lookup('env', 'ANSIBLE_HOST') }}"
+    domain: dmitriaronson.com
+    email: "{{ lookup('env', 'ADMIN_EMAIL') }}"
+    cftoken: "{{ lookup('env', 'CLOUDFLARE_TOKEN') }}"
     ports:
       ssh: 22
       http: 80

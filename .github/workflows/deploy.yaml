@@ -1,9 +1,10 @@
-name: Deploy dmitriaronson.com
+name: Run playbook
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [deploy-dmitriaronsoncom]
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -27,17 +28,15 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H ${{ vars.VPS_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.ANSIBLE_HOST }} >> ~/.ssh/known_hosts
 
       - name: Run Ansible playbook
         env:
           ANSIBLE_HOST_KEY_CHECKING: false
           ANSIBLE_USERNAME: ${{ secrets.ANSIBLE_USERNAME }}
-          ANSIBLE_DOMAIN: ${{ secrets.ANSIBLE_DOMAIN }}
-          WEBSITE_DOMAIN: dmitriaronson.com
-          EMAIL: ${{ secrets.EMAIL }}
-          SSH_KEY: "~/.ssh/id_ed25519"
+          ANSIBLE_HOST: ${{ secrets.ANSIBLE_HOST }}
+          EMAIL: ${{ secrets.ADMIN_EMAIL }}
           CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
         run: |
           cp .env-sample.yaml .env.yaml
-          ansible-playbook playbook.yaml -u ${{ vars.VPS_USERNAME }} --tags website
+          ansible-playbook playbook.yaml -u ${{ secrets.ANSIBLE_USERNAME }}

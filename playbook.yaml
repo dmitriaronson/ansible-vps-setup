@@ -13,8 +13,6 @@
 - name: Server setup
   hosts: vps
   remote_user: "{{ username }}"
-  vars_files:
-    - .env.yaml
   roles:
     - role: harden
       become: true
@@ -37,8 +35,3 @@
       become: true
       tags:
         - nginx
-
-    - role: dmitriaronson.com
-      become: true
-      tags:
-        - website
