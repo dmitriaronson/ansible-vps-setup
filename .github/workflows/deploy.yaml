@@ -38,5 +38,4 @@ jobs:
           EMAIL: ${{ secrets.ADMIN_EMAIL }}
           CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
         run: |
-          cp .env-sample.yaml .env.yaml
           ansible-playbook playbook.yaml -u ${{ secrets.ANSIBLE_USERNAME }}
