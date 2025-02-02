@@ -1,6 +1,7 @@
 name: Deploy dmitriaronson.com
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: [deploy-dmitriaronsoncom]
 
